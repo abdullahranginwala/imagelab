@@ -70,9 +70,9 @@ app.whenReady().then(() => {
   });
   
   // Handle the 'computeAll' request from the renderer process
-  ipcMain.handle('computeAll', (event) => {
+  ipcMain.handle('computeAll', async (event) => {
     try {
-      mainController.computeAll();
+      await mainController.computeAll();
       return true;
     } catch (error) {
       throw new Error(`Failed to compute: ${error.message}`);

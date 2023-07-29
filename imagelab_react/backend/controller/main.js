@@ -23,6 +23,7 @@ const AffineImage = require("../operator/geometric/AffineImage");
 const ReflectImage = require("../operator/geometric/ReflectImage");
 const RotateImage = require("../operator/geometric/RotateImage");
 const ScaleImage = require("../operator/geometric/ScaleImage");
+const ImageClassification = require("../operator/neural-network/ImageClassification");
 const Jimp = require('jimp');
 
 class MainController {
@@ -195,6 +196,11 @@ class MainController {
             new Morphological(PROCESS_OPERATIONS.MORPHOLOGICAL, id)
           );
           break;
+        case PROCESS_OPERATIONS.IMAGECLASSIFICATION:
+          this.#appliedOperators.push(
+            new ImageClassification(PROCESS_OPERATIONS.MORPHOLOGICAL, id)
+          );
+          break;
         default:
           break;
       }
@@ -210,7 +216,7 @@ class MainController {
   /**
    * This method compute and generate the output of the selected operators
    */
-  computeAll() {
+  async computeAll() {
     if (this.#appliedOperators.length === 0) {
       throw Error("No operators are added to the workspace");
     }
@@ -219,9 +225,9 @@ class MainController {
     }
     var image = this.getOriginalImage();
 
-    this.#appliedOperators.forEach((item) => {
+    this.#appliedOperators.forEach(async (item) => {
       if (image) {
-        image = item.compute(image);
+        image = await item.compute(image);
         if(image) {
           this.#processedImage = image;
         }

@@ -100,6 +100,18 @@ export const MY_TOOLBOX = {
           {"kind": "block", "type": "transformation_distance"},
           {"kind": "block", "type": "transformation_laplacian"}
         ]
+      },
+      {
+        "kind": "category",
+        "name": "Neural Network",
+        "colour": "#7c434a",
+        "contents": [
+          {"kind": "block", "type": "neural_imageclassification"},
+          {"kind": "block", "type": "neural_objectdetection"},
+          {"kind": "block", "type": "neural_semanticsegmentation"},
+          {"kind": "block", "type": "neural_styletransfer"},
+          {"kind": "block", "type": "neural_poseestimation"},
+        ]
       }
     ]
   };

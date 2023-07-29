@@ -1,6 +1,6 @@
 import './App.css';
 import './imagelab-block'
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { BlocklyWorkspace } from "react-blockly";
 import Blockly from "blockly";
 import { MY_TOOLBOX } from './toolboxConfiguration';
@@ -14,8 +14,6 @@ function App() {
   const [xml, setXml] = useState("");
   const [imageUrl, setImageUrl] = useState(null);
   const [processedImage, setProcessedImage] = useState(null);
-
-  const fileInputRef = useRef(null); // Ref for the hidden file input element
 
   const start = () => {
     const topBlock = Blockly.getMainWorkspace().getTopBlocks()[0];
@@ -33,13 +31,6 @@ function App() {
     };
   }, []);
 
-  useEffect(() => {
-    return () => {
-      localStorage.removeItem('base64Image'); 
-      localStorage.removeItem('storedImage');
-    };
-  }, []);
-
   const handleMessage = (event) => {
     if (event.data.type === 'imageSelected') {
       const imageUrl = event.data.imageUrl;
@@ -51,52 +42,14 @@ function App() {
     }
   };
 
-  const saveWorkspace = () => {
-    const xmlText = xml;
-    const element = document.createElement('a');
-    const file = new Blob([xmlText], { type: 'text/plain' });
-    element.href = URL.createObjectURL(file);
-    element.download = 'blockly-workspace.xml';
-    document.body.appendChild(element);
-    element.click();
-  }
-
-  const loadWorkspace = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-  
-    reader.onload = (event) => {
-      const xml = Blockly.Xml.textToDom(event.target.result);
-      const workspace = Blockly.getMainWorkspace();
-      Blockly.Xml.clearWorkspaceAndLoadFromXml(xml, workspace);
-    };
-  
-    reader.readAsText(file);
-  }  
-  const handleDownload = () => {
-    const imageUrl = localStorage.getItem('storedImage'); 
-
-    if (!imageUrl) {
-      window.alert('No processed image found in storage!');
-      return;
-    }
-
-    const link = document.createElement('a');
-    link.href = imageUrl;
-    link.download = 'processed_image.jpg'; 
-    
-    link.click();
-  };
-
   return (
     <>
       <Navbar>
           <Navbar.Group align={Alignment.LEFT}>
               <Navbar.Heading>ImageLab</Navbar.Heading>
               <Navbar.Divider />
-              <Button className="bp4-minimal" icon="document-open" text="Open" onClick={() => fileInputRef.current.click()} />
-              <input type="file" ref={fileInputRef} onChange={loadWorkspace} style={{ display: 'none' }}/>
-              <Button className="bp4-minimal" icon="document-share" text="Save" onClick={saveWorkspace} />
+              <Button className="bp4-minimal" icon="document-open" text="Open" />
+              <Button className="bp4-minimal" icon="document-share" text="Save" />
               <Button className="bp4-minimal" icon="lightbulb" />
           </Navbar.Group>
           <Navbar.Group align={Alignment.RIGHT}>
@@ -110,13 +63,13 @@ function App() {
       <div className='row'>
         <BlocklyWorkspace
           className="fill-height"
-          toolboxConfiguration={MY_TOOLBOX}
+          toolboxConfiguration={MY_TOOLBOX} // this must be a JSON toolbox definition
           initialXml={xml}
           onXmlChange={setXml}
           workspaceConfiguration={workspaceConfiguration}
         />
         <div className='panel'>
-          <h3>Preview | <Button className="bp4-minimal" icon="download" onClick={handleDownload} /> </h3>
+          <h3>Preview | <Button className="bp4-minimal" icon="download" /> </h3>
           <Card elevation={Elevation.ONE}>
             <p>Original Img</p>
             <ImageViewer imageUrl={imageUrl} />

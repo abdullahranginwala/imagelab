@@ -1111,6 +1111,113 @@ Blockly.defineBlocksWithJsonArray([
         "Laplacian Transformation is also a derivate which used to find edges in an image.It is a second order derivate mask Moreover in this mask two classifications one is Postive Laplacian and Negative Laplacian Unlike other opertors Laplacian didn't take out edges in any particular direction but it takes out edges in inward edges and outward edges.",
       helpUrl: "",
     },
+
+    //Neural Network
+    {
+      type: "neural_imageclassification",
+      message0: "Apply image classification with %1 model",
+      args0: [
+        {
+          type: "field_dropdown",
+          name: "model",
+          options: [
+            ["ALEXNET", "ALEXNET"],
+            ["DENSENET", "DENSENET"],
+            ["GOOGLENET", "GOOGLENET"],
+            ["SQUEEZENET", "SQUEEZENET"],
+          ],
+        },
+      ],
+      previousStatement: null,
+      nextStatement: null,
+      colour: "7C434A",
+      tooltip:
+        "",
+      helpUrl: "",
+    },
+    {
+      type: "neural_objectdetection",
+      message0: "Apply object detection with %1 model",
+      args0: [
+        {
+          type: "field_dropdown",
+          name: "model",
+          options: [
+            ["MOBILENET", "MOBILENET"],
+            ["VGG", "VGG"],
+          ],
+        },
+      ],
+      previousStatement: null,
+      nextStatement: null,
+      colour: "7C434A",
+      tooltip:
+        "",
+      helpUrl: "",
+    },
+    {
+      type: "neural_semanticsegmentation",
+      message0: "Apply semantic segmentation with %1 model",
+      args0: [
+        {
+          type: "field_dropdown",
+          name: "model",
+          options: [
+            ["DEEPLABV3", "DEEPLABV3"],
+          ],
+        },
+      ],
+      previousStatement: null,
+      nextStatement: null,
+      colour: "7C434A",
+      tooltip:
+        "",
+      helpUrl: "",
+    },
+    {
+      type: "neural_styletransfer",
+      message0: "Apply style transfer with %1 model",
+      args0: [
+        {
+          type: "field_dropdown",
+          name: "model",
+          options: [
+            ["CANDY", "CANDY"],
+            ["COMPOSITION", "COMPOSITION"],
+            ["FEATHERS", "FEATHERS"],
+            ["MOSAIC", "MOSAIC"],
+            ["STARRY_NIGHT", "STARRY_NIGHT"],
+          ],
+        },
+      ],
+      previousStatement: null,
+      nextStatement: null,
+      colour: "7C434A",
+      tooltip:
+        "",
+      helpUrl: "",
+    },
+    {
+      type: "neural_poseestimation",
+      message0: "Apply pose estimation with %1 model",
+      args0: [
+        {
+          type: "field_dropdown",
+          name: "model",
+          options: [
+            ["BODY", "BODY"],
+            ["COCO", "COCO"],
+            ["MPI", "MPI"],
+          ],
+        },
+      ],
+      previousStatement: null,
+      nextStatement: null,
+      colour: "7C434A",
+      tooltip:
+        "",
+      helpUrl: "",
+    },
   ]);
   
   /*
