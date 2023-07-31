@@ -1,0 +1,78 @@
+const OpenCvOperator = require("../OpenCvOperator");
+const fs = require("fs");
+const path = require("path");
+const { app } = require("electron");
+
+/**
+ * This class contains the main logic
+ * of image classification
+ */
+class SemanticSegmentation extends OpenCvOperator {
+  constructor(type, id) {
+    super(type, id);
+  }
+
+  /**
+   *
+   * @param {Mat Image} image
+   * @returns
+   * Computes the AffineImage transformation
+   * to the Processed Mat image
+   */
+  async compute(image) {
+
+    const modelFilePath = path.resolve(app.getAppPath(), "backend", "models", "image-classification", "alexnet", "model.caffemodel");
+    const configFilePath = path.resolve(app.getAppPath(), "backend", "models", "image-classification", "alexnet", "config.prototxt");
+    const labelsFilePath = path.resolve(app.getAppPath(), "backend", "models", "image-classification", "alexnet", "labels.txt");
+
+    const inputSize = [224,224];
+    const mean = [104, 117, 123];
+    const std = 1;
+    const swapRB = false;
+
+    //Load model
+    let net = this.cv2.readNet(configFilePath, modelFilePath);
+
+    const input = this.getBlobFromImage(inputSize, mean, std, swapRB, image);
+    net.setInput(input);
+    const result = net.forward();
+    const output = postProcess(result);
+
+    // console.log(output);
+    input.delete();
+    net.delete();
+    result.delete();
+  }
+
+  getBlobFromImage(inputSize,mean,std,swapRB,image) {
+    const mat = this.cv2.matFromImageData(image);
+    let matC3= new this.cv2.Mat(mat.matSize[0],mat.matSize[1],this.cv2.CV_8UC3);
+    this.cv2.cvtColor(mat,matC3,this.cv2.COLOR_RGBA2BGR);
+    let input=this.cv2.blobFromImage(matC3,std,new this.cv2.Size(inputSize[0],inputSize[1]),new this.cv2.Scalar(mean[0],mean[1],mean[2]),swapRB);
+    matC3.delete();
+    return input;
+  }
+
+  postProcess(result) {
+    const resultData = result.data32F;
+    const C = result.matSize[1];
+    const H = result.matSize[2];
+    const W = result.matSize[3];
+    const mean = [104, 117, 123];
+
+    let normData = [];
+    for (let h = 0; h < H; ++h) {
+        for (let w = 0; w < W; ++w) {
+            for (let c = 0; c < C; ++c) {
+                normData.push(resultData[c*H*W + h*W + w] + mean[c]);
+            }
+            normData.push(255);
+        }
+    }
+
+    let output = new cv.matFromArray(H, W, cv.CV_8UC4, normData);
+    return output;
+  }
+}
+
+module.exports = SemanticSegmentation;
