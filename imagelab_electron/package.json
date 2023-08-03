@@ -4,10 +4,12 @@
   "main": "main.js",
   "devDependencies": {
     "electron": "^13.1.6",
-    "electron-reload": "^2.0.0-alpha.1"
+    "electron-reload": "^2.0.0-alpha.1",
+    "jest": "^29.6.2"
   },
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "test": "jest"
   },
   "dependencies": {
     "@blockly/continuous-toolbox": "^1.0.12",
@@ -19,4 +21,3 @@
     "intro.js": "^4.1.0"
   }
 }
-
