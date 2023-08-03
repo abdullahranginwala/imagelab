@@ -1,7 +1,5 @@
 const OpenCvOperator = require("../OpenCvOperator");
 const fs = require("fs");
-const path = require("path");
-const { app } = require("electron");
 
 /**
  * This class contains the main logic
@@ -16,14 +14,14 @@ class ObjectDetection extends OpenCvOperator {
    *
    * @param {Mat Image} image
    * @returns
-   * Computes the AffineImage transformation
+   * Computes the ObjectDetection
    * to the Processed Mat image
    */
-  async compute(image) {
+  compute(image) {
 
-    const modelFilePath = path.resolve(app.getAppPath(), "backend", "models", "object-detection", "model.caffemodel");
-    const configFilePath = path.resolve(app.getAppPath(), "backend", "models", "object-detection", "config.prototxt");
-    const labelsFilePath = path.resolve(app.getAppPath(), "backend", "models", "object-detection", "labels.txt");
+    const modelFilePath = "./src/models/object-detection/model.caffemodel";
+    const configFilePath = "./src/models/object-detection/config.protxt";
+    const labelsFilePath = "./src/models/object-detection/labels.txt";
 
     const inputSize = [300, 300];
     const mean = [127.5, 127.5, 127.5];
@@ -64,31 +62,14 @@ class ObjectDetection extends OpenCvOperator {
     }
   }
 
-  getBlobFromImage(inputSize,mean,std,swapRB,image) {
-    const mat = this.cv2.matFromImageData(image);
-    let matC3= new this.cv2.Mat(mat.matSize[0],mat.matSize[1],this.cv2.CV_8UC3);
-    this.cv2.cvtColor(mat,matC3,this.cv2.COLOR_RGBA2BGR);
-    let input=this.cv2.blobFromImage(matC3,std,new this.cv2.Size(inputSize[0],inputSize[1]),new this.cv2.Scalar(mean[0],mean[1],mean[2]),swapRB);
-    matC3.delete();
-    return input;
-  }
+  getBlobFromImage = function (inputSize,mean,std,swapRB,image){let mat;if(typeof(image)==='string'){mat=cv.imread(image);}else{mat=image;}
+    let matC3=new cv.Mat(mat.matSize[0],mat.matSize[1],cv.CV_8UC3);cv.cvtColor(mat,matC3,cv.COLOR_RGBA2BGR);let input=cv.blobFromImage(matC3,std,new cv.Size(inputSize[0],inputSize[1]),new cv.Scalar(mean[0],mean[1],mean[2]),swapRB);matC3.delete();return input;}
 
-  softmax(result, needSoftmax) {
-    let arr = result.data32F;
-    if (needSoftmax) {
-        const maxNum = Math.max(...arr);
-        const expSum = arr.map((num) => Math.exp(num - maxNum)).reduce((a, b) => a + b);
-        return arr.map((value, index) => {
-            return Math.exp(value - maxNum) / expSum;
-        });
-    } else {
-        return arr;
-    }
-  }
 
   postProcess(result, labels, image, outType, confThreshold, nmsThreshold) {
-    const outputWidth = image.cols;
-    const outputHeight = image.rows;
+    let canvasOutput = document.getElementById('image-preview');
+    const outputWidth = canvasOutput.width;
+    const outputHeight = canvasOutput.height;
     const resultData = result.data32F;
 
     // Get the boxes(with class and confidence) from the output

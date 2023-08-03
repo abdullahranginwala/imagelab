@@ -23,6 +23,7 @@ const AffineImage = require("../operator/geometric/AffineImage");
 const ReflectImage = require("../operator/geometric/ReflectImage");
 const RotateImage = require("../operator/geometric/RotateImage");
 const ScaleImage = require("../operator/geometric/ScaleImage");
+const ObjectDetection = require("../operator/neural-network/ObjectDetection")
 const Jimp = require('jimp');
 
 class MainController {
@@ -193,6 +194,11 @@ class MainController {
         case PROCESS_OPERATIONS.MORPHOLOGICAL:
           this.#appliedOperators.push(
             new Morphological(PROCESS_OPERATIONS.MORPHOLOGICAL, id)
+          );
+          break;
+        case PROCESS_OPERATIONS.OBJECTDETECTION:
+          this.#appliedOperators.push(
+            new ObjectDetection(PROCESS_OPERATIONS.MORPHOLOGICAL, id)
           );
           break;
         default:

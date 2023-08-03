@@ -25,6 +25,7 @@ const RotateImage = require("../operator/geometric/RotateImage");
 const ScaleImage = require("../operator/geometric/ScaleImage");
 const AdaptiveThreshold = require("../operator/thresholding/AdaptiveThresholding");
 const ApplyThreshold = require("../operator/thresholding/ApplyThreshold");
+const ObjectDetection = require("../operator/neural-network/ObjectDetection");
 
 class MainController {
   // This private field is used to store the applied operators in the workspace
@@ -237,9 +238,16 @@ class MainController {
       case PROCESS_OPERATIONS.ADAPTIVETHRESHOLDING:
         this.#appliedOperators.push(
           new AdaptiveThreshold(PROCESS_OPERATIONS.ADAPTIVETHRESHOLDING, id)
+        );
+        break;
       case PROCESS_OPERATIONS.SIMPLETHRESHOLDING:
         this.#appliedOperators.push(
           new ApplyThreshold(PROCESS_OPERATIONS.SIMPLETHRESHOLDING, id)
+        );
+        break;
+      case PROCESS_OPERATIONS.OBJECTDETECTION:
+        this.#appliedOperators.push(
+          new ObjectDetection(PROCESS_OPERATIONS.SIMPLETHRESHOLDING, id)
         );
         break;
       default:

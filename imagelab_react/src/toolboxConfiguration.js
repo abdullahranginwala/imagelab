@@ -100,6 +100,14 @@ export const MY_TOOLBOX = {
           {"kind": "block", "type": "transformation_distance"},
           {"kind": "block", "type": "transformation_laplacian"}
         ]
+      },
+      {
+        "kind": "category",
+        "name": "Neural Network",
+        "colour": "#5b80a5",
+        "contents": [
+          {"kind": "block", "type": "neural_objectdetection"}
+        ]
       }
     ]
   };

@@ -1102,9 +1102,26 @@ Blockly.defineBlocksWithJsonArray([
     tooltip: 
     "Laplacian Transformation is also a derivative which is used to find edges in an image.It is a second order derivative mask.Moreover, there are two classifications: Positive Laplacian and Negative Laplacian.Unlike other operators, Laplacian doesn't take out edges in any particular direction, but it takes out edges in inward edges and outward edges.",
 
-    helpUrl: "",
- 
-
+    helpUrl:"",
+  },
+  {
+    type: "neural_objectdetection",
+    message0: "Apply object detection with %1 mode;",
+    args0: [
+      {
+        type: "field_dropdown",
+        name: "type",
+        options: [
+          ["SSD", "SSD"],
+        ],
+      }
+    ],
+    previousStatement: null,
+    nextStatement: null,
+    colour: 195,
+    tooltip:
+      "Object detection",
+    helpUrl: "",
   },
 ]);
 

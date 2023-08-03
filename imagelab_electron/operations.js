@@ -23,8 +23,9 @@ const PROCESS_OPERATIONS = {
   EROSION: "filtering_erosion",
   DILATION: "filtering_dilation",
   MORPHOLOGICAL: "filtering_morphological",
-  ADAPTIVETHRESHOLDING: "thresholding_adaptivethreshold"
+  ADAPTIVETHRESHOLDING: "thresholding_adaptivethreshold",
   SIMPLETHRESHOLDING: "thresholding_applythreshold",
+  OBJECTDETECTION: "neural_objectdetection"
 };
 
 module.exports = PROCESS_OPERATIONS;
